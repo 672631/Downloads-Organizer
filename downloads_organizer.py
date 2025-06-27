@@ -1,5 +1,6 @@
 import os
 import shutil
+import time
 from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -33,6 +34,29 @@ def move_files(path: Path):
             except Exception as e: 
                 print(f"Could not move {path.name}: {e}")
             return
-        
+
+class DownloadHandler(FileSystemEventHandler):
+    def on_created(self, event):
+        if not event.is_directory:
+            time.sleep(3)
+            move_files(Path(event.src_path))
+
+    def on_modified(self, event):
+        if not event.is_directory:
+            time.sleep(3)
+            move_files(Path(event.src_path))
+
+def watching():
+    observer = Observer()
+    observer.schedule(DownloadHandler(), str(downloads_folder), recursive = False)
+    observer.start()
+    print(f"Watching for downloads in: {downloads_folder}")
+    try: 
+        while True: 
+            time.sleep(3)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
+
 if __name__ == "__main__":
-    move_files()
+    watching()
