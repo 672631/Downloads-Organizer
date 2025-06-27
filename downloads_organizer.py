@@ -1,7 +1,10 @@
 import os
 import shutil
 from pathlib import Path
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
+#Folder setup
 home = Path.home()
 downloads_folder = home / "Downloads"
 if not downloads_folder.exists():
@@ -14,24 +17,22 @@ target_folders = {
     home / "OneDrive/Musikk":[".mp3", ".wav"]
 }
 
-def move_files():
-    for filename in os.listdir(downloads_folder):
-        source_path = downloads_folder / filename
+#Function for moving files to appropriate directory
+def move_files(path: Path):
+    
+    ext = path.suffix.lower()
 
-        if source_path.is_file():
-            ext = source_path.suffix.lower()
-            moved = False
-            for folder, extensions in target_folders.items():
-                if ext in extensions:
-                    dest_folder = folder
-                    if not dest_folder.exists():
-                        print(f"{dest_folder} Does not exist")
-                        break
-                    shutil.move(str(source_path), str(dest_folder / filename))
-                    moved = True
-                    break
-            if not moved:
-                print(f"Ukjent filtype: {filename}")
-
+    for dest_folder, extensions in target_folders.items():
+        if ext in extensions:
+            if not dest_folder.exists():
+                print(f"{dest_folder} does not exist")
+                return
+            try:
+                shutil.move(str(path), str(dest_folder / path.name))
+                print(f"Moved {path.name} -> {dest_folder}")
+            except Exception as e: 
+                print(f"Could not move {path.name}: {e}")
+            return
+        
 if __name__ == "__main__":
     move_files()
