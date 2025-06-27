@@ -34,6 +34,7 @@ def move_files(path: Path):
                 print(f"Could not move {path.name}: {e}")
             return
 
+#Watchdog event handler
 class DownloadHandler(FileSystemEventHandler):
     def on_created(self, event):
         if not event.is_directory:
@@ -45,6 +46,7 @@ class DownloadHandler(FileSystemEventHandler):
             time.sleep(3)
             move_files(Path(event.src_path))
 
+#Watching function
 def watching():
     observer = Observer()
     observer.schedule(DownloadHandler(), str(downloads_folder), recursive = False)
