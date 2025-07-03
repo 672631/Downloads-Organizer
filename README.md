@@ -3,7 +3,7 @@ A background script that automatically sorts downloaded files into the appropria
 
 ## Features
 
-- Moves files from 'Downloads'/'Nedlastinger' to the target folders:
+- Moves files from 'Downloads' or 'Nedlastinger' to the target folders:
   - OneDrive/Dokumenter
   - OneDrive/Bilder
   - OneDrive/Videos
