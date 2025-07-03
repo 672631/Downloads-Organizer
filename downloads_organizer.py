@@ -38,12 +38,12 @@ def move_files(path: Path):
 class DownloadHandler(FileSystemEventHandler):
     def on_created(self, event):
         if not event.is_directory:
-            time.sleep(3)
+            time.sleep(1)
             move_files(Path(event.src_path))
 
     def on_modified(self, event):
         if not event.is_directory:
-            time.sleep(3)
+            time.sleep(1)
             move_files(Path(event.src_path))
 
 #Watching function
