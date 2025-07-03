@@ -22,10 +22,10 @@ Install dependencies:
 
 ```bash
 pip install watchdog
-
 ```
 ## Compile to EXE
 ```bash
+pip install pyinstaller #Install pyinstaller if you haven't already
 pyinstaller --noconsole --onefile downloads_organizer.py
 ```
 The resulting executable will be place in the dist/ folder in your repository
